@@ -1,0 +1,50 @@
+version: '3'
+services:
+    winter:
+      build:
+        args:
+          user: wintercms
+          uid: 1000
+        context: ./
+        dockerfile: docker/Dockerfile
+      image: wintercms
+      container_name: php-${APP_NAME}
+      restart: unless-stopped
+      working_dir: /var/www/html
+      volumes:
+        - ./html/:/var/www/html
+      networks:
+        - network-dev
+    nginx:
+        image: nginx:alpine
+        container_name: nginx-${APP_NAME}
+        restart: unless-stopped
+        ports:
+            - "8000:80"
+        volumes:
+            - ./html:/var/www/html
+            - ./docker/nginx:/etc/nginx/conf.d
+        networks:
+          - network-dev
+        depends_on:
+            - winter
+            - db
+    db:
+        image: mysql:5.7
+        container_name: db-${APP_NAME}
+        restart: unless-stopped
+        environment:
+          MYSQL_DATABASE: ${DB_DATABASE}
+          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+          MYSQL_USER: ${DB_USERNAME}
+          MYSQL_PASSWORD: ${DB_PASSWORD}
+          SERVICE_TAGS: dev
+          SERVICE_NAME: mysql
+        ports:
+            - "3306:3306"
+        networks:
+          - network-dev
+
+networks:
+  network-dev:
+    driver: bridge
