@@ -6,6 +6,8 @@
 - `cd html && rm -rf .github .gitpod .vscode .gitpod.yml .git CHANGELOG.md README.md && cd ..`
   
   Clean redundant stuff + `.git` folder so you can use your remote origin
+- `docker compose build`
+- `docker compose up -d`
 - `docker compose exec winter composer install`
 - `docker compose exec winter php artisan winter:install`
   
