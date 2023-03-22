@@ -3,6 +3,8 @@
 - `git clone git@github.com:friendlee-digital/wintercms-docker-setup.git <your-winter-instance>`
 - `cd <your-winter-instance>`
 - `git clone --depth=1 git@github.com:friendlee-digital/winter.git html`
+
+  Clone an empty instance of Winter via our fork
 - `cd html && rm -rf .git README.md && cd ..`
   
   Clean redundant stuff + `.git` folder so you can use your remote origin
