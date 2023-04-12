@@ -13,8 +13,14 @@ services:
       working_dir: /var/www/html
       volumes:
         - ./html/:/var/www/html
+        - ./logs:/var/log
+      environment:
+        XDEBUG_MODE: debug
+        XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003 log=/var/log/xdebug.log start_with_request=yes
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
       networks:
-        - network-dev
+        - internal
     nginx:
         image: nginx:alpine
         container_name: nginx-${APP_NAME}
@@ -25,7 +31,7 @@ services:
             - ./html:/var/www/html
             - ./docker/nginx:/etc/nginx/conf.d
         networks:
-          - network-dev
+          - internal
         depends_on:
             - winter
             - db
@@ -43,8 +49,8 @@ services:
         ports:
             - "3306:3306"
         networks:
-          - network-dev
+          - internal
 
 networks:
-  network-dev:
+  internal:
     driver: bridge

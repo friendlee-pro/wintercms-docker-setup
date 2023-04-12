@@ -16,7 +16,12 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libsqlite3-dev \
     libwebp-dev \
-    libzip-dev
+    libzip-dev\
+    vim
+
+# Install xedbug
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
